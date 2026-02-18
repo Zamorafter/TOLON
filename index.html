@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOLÓN - Fashion Mall</title>
+    <style>
+        :root {
+            --negro: #000000;
+            --azul-marino: #000033; /* Azul marino profundo */
+            --blanco: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--negro);
+            color: var(--blanco);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #main-container {
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* Mensaje flotante sutil */
+        #hint-bubble {
+            position: fixed;
+            top: 15%;
+            right: 5%;
+            background: var(--azul-marino);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        /* Contenedor de botones */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        button {
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease-out;
+            cursor: pointer;
+        }
+
+        #btn-si {
+            background-color: var(--blanco);
+            color: var(--negro);
+            padding: 15px 40px;
+            z-index: 10;
+        }
+
+        #btn-no {
+            background-color: var(--azul-marino);
+            color: var(--blanco);
+            padding: 10px 25px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        /* Pantalla Final */
+        #success-screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .positive-msg {
+            color: var(--blanco);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .tolon-brand {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--blanco);
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .insta-logo {
+            width: 35px;
+            height: 35px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .instrution-text {
+            font-size: 0.8rem;
+            margin-top: 15px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hint-bubble">¿Estás seguro?</div>
+
+    <div id="main-container">
+        <div id="quiz-section">
+            <h1 id="header-text">¿Quieres recibir noticias exclusivas del Centro Comercial TOLÓN?</h1>
+            <div class="controls">
+                <button id="btn-si" onclick="finish()">SÍ</button>
+                <button id="btn-no" onclick="moveNo()">NO</button>
+            </div>
+        </div>
+
+        <div id="success-screen">
+            <p class="positive-msg">¡Excelente decisión! Te esperamos en:</p>
+            <a href="https://www.instagram.com/tolon_fm?igsh=MXR4c2p0bDFyZ3U1cg==" class="tolon-brand" target="_blank">
+                TOLÓN
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="insta-logo" alt="IG">
+            </a>
+            <p class="instrution-text">Haz clic en el nombre para ir a Instagram</p>
+        </div>
+    </div>
+
+    <script>
+        let clicks = 0;
+        let scale = 1;
+        const phrases = [
+            "¿En serio?",
+            "¡No te arrepientas!",
+            "Piénsalo una vez más...",
+            "¡Casi no queda espacio!",
+            "¡Última oportunidad!"
+        ];
+
+        function moveNo() {
+            clicks++;
+            const btnNo = document.getElementById('btn-no');
+            const btnSi = document.getElementById('btn-si');
+            const hint = document.getElementById('hint-bubble');
+            const header = document.getElementById('header-text');
+
+            // 1. Mostrar mensaje sutil
+            hint.innerText = phrases[clicks - 1] || "¡Dale a SÍ!";
+            hint.style.opacity = "1";
+            setTimeout(() => { hint.style.opacity = "0"; }, 1200);
+
+            // 2. Crecer el botón SI
+            scale += 0.6;
+            btnSi.style.transform = `scale(${scale})`;
+
+            // 3. Mover el botón NO
+            const x = Math.random() * 60 - 30; // Movimiento lateral
+            const y = Math.random() * 40;      // Movimiento hacia abajo
+            btnNo.style.transform = `translate(${x}px, ${y}px)`;
+
+            // 4. Desaparecer NO tras 5 veces
+            if (clicks >= 5) {
+                btnNo.style.display = "none";
+                header.innerText = "¡Solo una opción queda para ti!";
+            }
+        }
+
+        function finish() {
+            document.getElementById('quiz-section').style.display = 'none';
+            const success = document.getElementById('success-screen');
+            success.style.display = 'block';
+            setTimeout(() => { success.style.opacity = '1'; }, 10);
+        }
+    </script>
+</body>
+</html>
