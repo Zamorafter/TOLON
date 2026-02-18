@@ -24,7 +24,7 @@ body{
     margin:0;
     height:100vh;
     background:url('fondo.jpeg') center/cover fixed;
-    background-color: #0c1623; /* Fallback */
+    background-color: #0c1623; 
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -33,7 +33,7 @@ body{
     overflow:hidden;
 }
 
-/* EFECTO DE ESTRELLAS FLOTANTES */
+/* ESTRELLAS (Z-INDEX 0 para que no estorben) */
 .star {
     position: absolute;
     background: white;
@@ -41,6 +41,7 @@ body{
     opacity: 0.5;
     animation: float 10s infinite linear;
     z-index: 0;
+    pointer-events: none; /* Esto evita que las estrellas bloqueen clics */
 }
 
 @keyframes float {
@@ -50,50 +51,38 @@ body{
 
 .header-logo-outside{
     text-align:center;
-    margin-bottom:20px;
-    z-index: 10;
+    margin-bottom:15px;
+    z-index: 100; /* Prioridad alta */
+    position: relative;
 }
 
-.header-logo-outside h2{
-    color:white;
-    margin:0;
-    font-size:2.2rem;
-    letter-spacing:6px;
-    font-weight: 900;
+.header-logo-outside img {
+    max-width: 160px;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    cursor: pointer;
 }
 
-.header-logo-outside p{
-    color:white;
-    margin:0;
-    font-size:.9rem;
-    letter-spacing:3px;
-    text-transform: uppercase;
-}
-
+/* TARJETA MÁS COMPACTA */
 .main-card{
     width:92%;
-    max-width:420px;
-    min-height:580px;
-    border-radius:35px;
-    padding:40px 25px;
-    backdrop-filter:blur(25px);
-    -webkit-backdrop-filter:blur(25px);
+    max-width:380px;
+    min-height:420px; /* Reducido según lo pedido */
+    border-radius:30px;
+    padding:25px;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
     background:var(--glass);
     border:1px solid rgba(255,255,255,0.4);
     display:flex;
     flex-direction:column;
     text-align:center;
-    box-shadow:0 25px 60px rgba(0,0,0,.5);
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
     position: relative; 
-    z-index: 10;
-    transition: transform 0.1s ease; /* Para el efecto shake */
+    z-index: 50;
 }
 
-/* Animación de vibración */
-.shake {
-    animation: shakeAnim 0.3s linear;
-}
-
+.shake { animation: shakeAnim 0.3s linear; }
 @keyframes shakeAnim {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-8px); }
@@ -103,44 +92,40 @@ body{
 #warning-text {
     color: #ffeb3b; 
     font-weight: bold;
-    font-size: 0.9rem;
-    min-height: 1.2rem;
-    margin-bottom: 10px;
-    text-transform: uppercase;
+    font-size: 0.85rem;
+    min-height: 1.1rem;
+    margin-bottom: 8px;
 }
 
 h1{
     color:white;
-    font-size:1.5rem;
-    margin-bottom:30px;
-    line-height: 1.2;
+    font-size:1.3rem;
+    margin-bottom:15px;
 }
 
 .btn-container{
     display:flex;
     justify-content:center;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     margin-top:auto;
-    min-height:220px;
+    min-height:120px; /* Reducido para compactar */
     position: relative;
 }
 
 button{
     border:none;
     border-radius:12px;
-    padding:16px 35px;
+    padding:14px 28px;
     font-weight:900;
     cursor:pointer;
-    transition: transform 0.2s ease, background 0.3s ease, all 0.2s ease; 
 }
 
 #btn-si{
     background:white;
     color:black;
-    z-index: 10;
+    z-index: 60;
     animation: pulse 1.5s infinite;
-    position: relative;
 }
 
 @keyframes pulse {
@@ -149,53 +134,43 @@ button{
     100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
-#btn-no{
-    background:var(--azul);
-    color:white;
-    z-index: 20;
-}
+#btn-no{ background:var(--azul); color:white; z-index: 70; }
 
 #success-content{
     display:none;
     animation:fade .6s ease forwards;
 }
 
-.motivation{
-    color:white;
-    font-size:1.2rem;
-    margin-bottom:15px;
-    font-weight:bold;
-}
+.motivation{ color:white; font-size:1.1rem; margin-bottom:10px; font-weight:bold; }
+.subtext{ color:white; font-size:0.9rem; margin-bottom:15px; }
 
-.subtext{
-    color:white;
-    font-size:1rem;
-    margin-bottom:25px;
-}
-
+/* ENLACE INSTAGRAM REFORZADO */
 .insta-brand{
-    display:flex;
+    display:inline-flex;
     align-items:center;
     justify-content:center;
-    gap:12px;
-    font-size:2.5rem;
+    gap:10px;
+    font-size:2rem;
     font-weight:900;
     color:white;
     text-decoration:none;
-    margin-bottom:30px;
+    margin-bottom:20px;
+    position: relative;
+    z-index: 100; /* Asegura que esté por encima de todo */
+    cursor: pointer;
+    pointer-events: auto; /* Fuerza la capacidad de clic */
 }
 
 .store-logos{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
-    gap:15px;
-    margin-top:15px;
+    gap:10px;
     align-items: center; 
 }
 
 .store-logos img{
     width:100%;
-    height:55px; 
+    height:40px; 
     object-fit:contain;
     filter:brightness(0) invert(1);
 }
@@ -210,10 +185,11 @@ button{
 <body>
 
 <script>
+    // Generador de estrellas
     for (let i = 0; i < 15; i++) {
         let star = document.createElement('div');
         star.className = 'star';
-        star.style.width = Math.random() * 4 + 'px';
+        star.style.width = Math.random() * 3 + 'px';
         star.style.height = star.style.width;
         star.style.left = Math.random() * 100 + 'vw';
         star.style.animationDelay = Math.random() * 10 + 's';
@@ -222,46 +198,46 @@ button{
 </script>
 
 <div class="header-logo-outside">
-    <h2>TOLÓN</h2>
-    <p>Fashion Mall</p>
+        <img src="tolon b.PNG" alt="TOLÓN Logo">
+    </a>
 </div>
 
 <div class="main-card" id="mainCard">
 
-<div id="interactive-box">
-    <div id="warning-text"></div>
-    <h1>¿Quieres recibir noticias exclusivas del Centro Comercial TOLÓN?</h1>
+    <div id="interactive-box">
+        <div id="warning-text"></div>
+        <h1>¿Quieres recibir noticias exclusivas?</h1>
 
-    <div class="btn-container">
-        <button id="btn-si" onclick="celebrate()">SÍ</button>
-        <button id="btn-no" onclick="reject()">NO</button>
+        <div class="btn-container">
+            <button id="btn-si" onclick="celebrate()">SÍ</button>
+            <button id="btn-no" onclick="reject()">NO</button>
+        </div>
     </div>
-</div>
 
-<div id="success-content">
-    <div class="motivation">✨ Lo exclusivo no es para todos…</div>
-    <div class="subtext">Presiona <strong>TOLÓN</strong> para enterarte de cosas exclusivas</div>
+    <div id="success-content">
+        <div class="motivation">✨ Lo exclusivo no es para todos…</div>
+        <div class="subtext">Haz clic abajo para enterarte de más</div>
 
-    <a href="https://www.instagram.com/tolon_fm" target="_blank" class="insta-brand">
-        TOLÓN
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="40">
-    </a>
+        <a href="https://www.instagram.com/tolon_fm" target="_blank" rel="noopener noreferrer" class="insta-brand">
+            TOLÓN
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="30">
+        </a>
 
-    <div class="store-logos">
-        <img src="LOGO MIMI JOYERIA.png">
-        <img src="cocotahi.png">
-        <img src="Balu moda.png">
-        <img src="pdpaola.png" style="height:75px; transform: scale(1.1);">
-        <img src="pandora.png" style="height:75px; transform: scale(1.1);">
+        <div class="store-logos">
+            <img src="LOGO MIMI JOYERIA.png">
+            <img src="cocotahi.png">
+            <img src="Balu moda.png">
+            <img src="pdpaola.png" style="height:50px;">
+            <img src="pandora.png" style="height:50px;">
+        </div>
     </div>
-</div>
 
 </div>
 
 <script>
 let attempts = 0;
 const messages = ["¡Ey!", "¡Por ahí no!", "¡Error!", "¡Cuidado!", "¡Basta!"];
-const siTexts = ["SÍ", "¿SEGURO?", "¡DALE YA!", "OBVIAMENTE", "SÍ O SÍ"];
+const siTexts = ["SÍ", "¿SEGURO?", "¡DALE YA!", "OBVIO", "SÍ O SÍ"];
 
 const soundError = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3');
 const soundSuccess = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
@@ -276,34 +252,20 @@ function reject(){
     if(attempts <= 5) {
         soundError.currentTime = 0;
         soundError.play();
-        
-        // 1. Shake de la tarjeta
         card.classList.remove("shake");
-        void card.offsetWidth; // Truco para reiniciar la animación
+        void card.offsetWidth; 
         card.classList.add("shake");
-
         warning.innerText = messages[attempts-1];
-        
-        // 2. Cambiar texto del botón SÍ
         btnSi.innerText = siTexts[attempts % siTexts.length];
 
         if(attempts === 1) { btnNo.style.position = "absolute"; }
 
-        // Lógica de escape (evitando el centro)
-        let randomLeft, randomTop, isSafe = false;
-        while (!isSafe) {
-            randomLeft = Math.floor(Math.random() * 80) + 5;
-            randomTop = Math.floor(Math.random() * 70) + 10;
-            const exW = 25 + (attempts * 5); 
-            const exH = 20 + (attempts * 5);
-            if (!(randomLeft > (50-exW) && randomLeft < (50+exW) && randomTop > (60-exH) && randomTop < (60+exH))) {
-                isSafe = true;
-            }
-        }
+        let randomLeft = Math.floor(Math.random() * 60) + 20;
+        let randomTop = Math.floor(Math.random() * 50) + 20;
 
         btnNo.style.left = randomLeft + "%";
         btnNo.style.top = randomTop + "%";
-        btnSi.style.transform = `scale(${1 + attempts * 0.40})`;
+        btnSi.style.transform = `scale(${1 + attempts * 0.30})`;
     }
 
     if(attempts >= 5) {
