@@ -1,197 +1,330 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOLÓN - Fashion Mall</title>
-    <style>
-        :root {
-            --negro: #000000;
-            --azul-marino: #000033; /* Azul marino profundo */
-            --blanco: #FFFFFF;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOLÓN - Fashion Mall</title>
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--negro);
-            color: var(--blanco);
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            text-align: center;
-        }
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        #main-container {
-            width: 90%;
-            max-width: 400px;
-        }
+<style>
+:root{
+    --negro:#000;
+    --azul:#1a2a40;
+    --blanco:#fff;
+    --glass:rgba(255,255,255,0.25);
+}
 
-        h1 {
-            font-size: 1.4rem;
-            font-weight: 300;
-            margin-bottom: 40px;
-            letter-spacing: 1px;
-        }
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
 
-        /* Mensaje flotante sutil */
-        #hint-bubble {
-            position: fixed;
-            top: 15%;
-            right: 5%;
-            background: var(--azul-marino);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
+body{
+    margin:0;
+    height:100vh;
+    background:url('fondo.jpeg') center/cover fixed;
+    background-color: #0c1623; /* Fallback */
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-family:'Helvetica Neue',Arial, sans-serif;
+    overflow:hidden;
+}
 
-        /* Contenedor de botones */
-        .controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-        }
+/* EFECTO DE ESTRELLAS FLOTANTES */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: float 10s infinite linear;
+    z-index: 0;
+}
 
-        button {
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s ease-out;
-            cursor: pointer;
-        }
+@keyframes float {
+    0% { transform: translateY(100vh) scale(0); }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
 
-        #btn-si {
-            background-color: var(--blanco);
-            color: var(--negro);
-            padding: 15px 40px;
-            z-index: 10;
-        }
+.header-logo-outside{
+    text-align:center;
+    margin-bottom:20px;
+    z-index: 10;
+}
 
-        #btn-no {
-            background-color: var(--azul-marino);
-            color: var(--blanco);
-            padding: 10px 25px;
-            font-size: 0.9rem;
-            position: relative;
-        }
+.header-logo-outside h2{
+    color:white;
+    margin:0;
+    font-size:2.2rem;
+    letter-spacing:6px;
+    font-weight: 900;
+}
 
-        /* Pantalla Final */
-        #success-screen {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
+.header-logo-outside p{
+    color:white;
+    margin:0;
+    font-size:.9rem;
+    letter-spacing:3px;
+    text-transform: uppercase;
+}
 
-        .positive-msg {
-            color: var(--blanco);
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
+.main-card{
+    width:92%;
+    max-width:420px;
+    min-height:580px;
+    border-radius:35px;
+    padding:40px 25px;
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,0.4);
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    box-shadow:0 25px 60px rgba(0,0,0,.5);
+    position: relative; 
+    z-index: 10;
+    transition: transform 0.1s ease; /* Para el efecto shake */
+}
 
-        .tolon-brand {
-            display: inline-flex;
-            align-items: center;
-            text-decoration: none;
-            color: var(--blanco);
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
+/* Animación de vibración */
+.shake {
+    animation: shakeAnim 0.3s linear;
+}
 
-        .insta-logo {
-            width: 35px;
-            height: 35px;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
+@keyframes shakeAnim {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
 
-        .instrution-text {
-            font-size: 0.8rem;
-            margin-top: 15px;
-            opacity: 0.6;
-        }
-    </style>
+#warning-text {
+    color: #ffeb3b; 
+    font-weight: bold;
+    font-size: 0.9rem;
+    min-height: 1.2rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+h1{
+    color:white;
+    font-size:1.5rem;
+    margin-bottom:30px;
+    line-height: 1.2;
+}
+
+.btn-container{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    gap: 20px;
+    margin-top:auto;
+    min-height:220px;
+    position: relative;
+}
+
+button{
+    border:none;
+    border-radius:12px;
+    padding:16px 35px;
+    font-weight:900;
+    cursor:pointer;
+    transition: transform 0.2s ease, background 0.3s ease, all 0.2s ease; 
+}
+
+#btn-si{
+    background:white;
+    color:black;
+    z-index: 10;
+    animation: pulse 1.5s infinite;
+    position: relative;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+#btn-no{
+    background:var(--azul);
+    color:white;
+    z-index: 20;
+}
+
+#success-content{
+    display:none;
+    animation:fade .6s ease forwards;
+}
+
+.motivation{
+    color:white;
+    font-size:1.2rem;
+    margin-bottom:15px;
+    font-weight:bold;
+}
+
+.subtext{
+    color:white;
+    font-size:1rem;
+    margin-bottom:25px;
+}
+
+.insta-brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    font-size:2.5rem;
+    font-weight:900;
+    color:white;
+    text-decoration:none;
+    margin-bottom:30px;
+}
+
+.store-logos{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:15px;
+    margin-top:15px;
+    align-items: center; 
+}
+
+.store-logos img{
+    width:100%;
+    height:55px; 
+    object-fit:contain;
+    filter:brightness(0) invert(1);
+}
+
+@keyframes fade{
+    from{opacity:0;transform:scale(.9)}
+    to{opacity:1;transform:scale(1)}
+}
+</style>
 </head>
+
 <body>
 
-    <div id="hint-bubble">¿Estás seguro?</div>
+<script>
+    for (let i = 0; i < 15; i++) {
+        let star = document.createElement('div');
+        star.className = 'star';
+        star.style.width = Math.random() * 4 + 'px';
+        star.style.height = star.style.width;
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDelay = Math.random() * 10 + 's';
+        document.body.appendChild(star);
+    }
+</script>
 
-    <div id="main-container">
-        <div id="quiz-section">
-            <h1 id="header-text">¿Quieres recibir noticias exclusivas del Centro Comercial TOLÓN?</h1>
-            <div class="controls">
-                <button id="btn-si" onclick="finish()">SÍ</button>
-                <button id="btn-no" onclick="moveNo()">NO</button>
-            </div>
-        </div>
+<div class="header-logo-outside">
+    <h2>TOLÓN</h2>
+    <p>Fashion Mall</p>
+</div>
 
-        <div id="success-screen">
-            <p class="positive-msg">¡Excelente decisión! Te esperamos en:</p>
-            <a href="https://www.instagram.com/reel/DU4ERWICX49/?igsh=OGx5bXphNmd3Mm1l" class="tolon-brand" target="_blank">
-                TOLÓN
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="insta-logo" alt="IG">
-            </a>
-            <p class="instrution-text">Haz clic en el nombre para ir a Instagram</p>
-        </div>
+<div class="main-card" id="mainCard">
+
+<div id="interactive-box">
+    <div id="warning-text"></div>
+    <h1>¿Quieres recibir noticias exclusivas del Centro Comercial TOLÓN?</h1>
+
+    <div class="btn-container">
+        <button id="btn-si" onclick="celebrate()">SÍ</button>
+        <button id="btn-no" onclick="reject()">NO</button>
     </div>
+</div>
 
-    <script>
-        let clicks = 0;
-        let scale = 1;
-        const phrases = [
-            "¿En serio?",
-            "¡No te arrepientas!",
-            "Piénsalo una vez más...",
-            "¡Casi no queda espacio!",
-            "¡Última oportunidad!"
-        ];
+<div id="success-content">
+    <div class="motivation">✨ Lo exclusivo no es para todos…</div>
+    <div class="subtext">Presiona <strong>TOLÓN</strong> para enterarte de cosas exclusivas</div>
 
-        function moveNo() {
-            clicks++;
-            const btnNo = document.getElementById('btn-no');
-            const btnSi = document.getElementById('btn-si');
-            const hint = document.getElementById('hint-bubble');
-            const header = document.getElementById('header-text');
+    <a href="https://www.instagram.com/tolon_fm" target="_blank" class="insta-brand">
+        TOLÓN
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" width="40">
+    </a>
 
-            // 1. Mostrar mensaje sutil
-            hint.innerText = phrases[clicks - 1] || "¡Dale a SÍ!";
-            hint.style.opacity = "1";
-            setTimeout(() => { hint.style.opacity = "0"; }, 1200);
+    <div class="store-logos">
+        <img src="LOGO MIMI JOYERIA.png">
+        <img src="cocotahi.png">
+        <img src="Balu moda.png">
+        <img src="pdpaola.png" style="height:75px; transform: scale(1.1);">
+        <img src="pandora.png" style="height:75px; transform: scale(1.1);">
+    </div>
+</div>
 
-            // 2. Crecer el botón SI
-            scale += 0.6;
-            btnSi.style.transform = `scale(${scale})`;
+</div>
 
-            // 3. Mover el botón NO
-            const x = Math.random() * 60 - 30; // Movimiento lateral
-            const y = Math.random() * 40;      // Movimiento hacia abajo
-            btnNo.style.transform = `translate(${x}px, ${y}px)`;
+<script>
+let attempts = 0;
+const messages = ["¡Ey!", "¡Por ahí no!", "¡Error!", "¡Cuidado!", "¡Basta!"];
+const siTexts = ["SÍ", "¿SEGURO?", "¡DALE YA!", "OBVIAMENTE", "SÍ O SÍ"];
 
-            // 4. Desaparecer NO tras 5 veces
-            if (clicks >= 5) {
-                btnNo.style.display = "none";
-                header.innerText = "¡Solo una opción queda para ti!";
+const soundError = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3');
+const soundSuccess = new Audio('https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3');
+
+function reject(){
+    attempts++;
+    const btnNo = document.getElementById("btn-no");
+    const btnSi = document.getElementById("btn-si");
+    const warning = document.getElementById("warning-text");
+    const card = document.getElementById("mainCard");
+
+    if(attempts <= 5) {
+        soundError.currentTime = 0;
+        soundError.play();
+        
+        // 1. Shake de la tarjeta
+        card.classList.remove("shake");
+        void card.offsetWidth; // Truco para reiniciar la animación
+        card.classList.add("shake");
+
+        warning.innerText = messages[attempts-1];
+        
+        // 2. Cambiar texto del botón SÍ
+        btnSi.innerText = siTexts[attempts % siTexts.length];
+
+        if(attempts === 1) { btnNo.style.position = "absolute"; }
+
+        // Lógica de escape (evitando el centro)
+        let randomLeft, randomTop, isSafe = false;
+        while (!isSafe) {
+            randomLeft = Math.floor(Math.random() * 80) + 5;
+            randomTop = Math.floor(Math.random() * 70) + 10;
+            const exW = 25 + (attempts * 5); 
+            const exH = 20 + (attempts * 5);
+            if (!(randomLeft > (50-exW) && randomLeft < (50+exW) && randomTop > (60-exH) && randomTop < (60+exH))) {
+                isSafe = true;
             }
         }
 
-        function finish() {
-            document.getElementById('quiz-section').style.display = 'none';
-            const success = document.getElementById('success-screen');
-            success.style.display = 'block';
-            setTimeout(() => { success.style.opacity = '1'; }, 10);
-        }
-    </script>
-</body>
+        btnNo.style.left = randomLeft + "%";
+        btnNo.style.top = randomTop + "%";
+        btnSi.style.transform = `scale(${1 + attempts * 0.40})`;
+    }
 
+    if(attempts >= 5) {
+        btnNo.style.display = "none";
+        warning.style.color = "#ff5252"; 
+        warning.innerText = "¡YA NO TIENES OPCIÓN!";
+    }
+}
+
+function celebrate(){
+    soundSuccess.play();
+    confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ffffff', '#1a2a40', '#ffeb3b']
+    });
+    document.getElementById("interactive-box").style.display = "none";
+    document.getElementById("success-content").style.display = "block";
+}
+</script>
+
+</body>
 </html>
