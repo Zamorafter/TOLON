@@ -324,13 +324,33 @@ function celebrate(){
     document.getElementById("success-content").style.display = "block";
 }
 
-// Fix adicional para iOS: Asegurar que el click en el enlace funcione
-document.querySelector('.insta-link').addEventListener('click', function(e) {
-    // Si por alguna razón el href falla en iOS, forzamos la apertura
-    window.open("https://www.instagram.com/tolon_fm/", "_blank");
-});
+function openInstagram(e){
+    e.preventDefault();
+
+    const username = "tolon_fm";
+
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if(isAndroid){
+        // Intent para Android
+        window.location.href = 
+        "intent://instagram.com/_u/" + username + 
+        "#Intent;package=com.instagram.android;scheme=https;end";
+    }
+    else if(isIOS){
+        // Deep link para iOS
+        window.location.href = "instagram://user?username=" + username;
+    }
+
+    // Fallback web si no tiene la app
+    setTimeout(function(){
+        window.location.href = "https://www.instagram.com/" + username + "/";
+    }, 800);
+}
 </script>
 
 </body>
 </html>
+
 
