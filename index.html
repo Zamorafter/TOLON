@@ -10,9 +10,6 @@
 <style>
 :root{
     --negro:#000;
-    --gris-oscuro:#1a1a1a;
-    --blanco:#fff;
-    /* Glassmorphism: Fondo muy transparente para que se vea el desenfoque */
     --glass: rgba(255, 255, 255, 0.08); 
 }
 
@@ -24,8 +21,8 @@
 body{
     margin:0;
     height:100vh;
-    /* FONDO: Radial gradient para centro claro y esquinas oscuras */
-    background: radial-gradient(circle, #333333 0%, #000000 100%);
+    /* FONDO: Centro claro (#444), esquinas negras (#000) */
+    background: radial-gradient(circle, #444444 0%, #000000 100%);
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -34,7 +31,6 @@ body{
     overflow:hidden;
 }
 
-/* ESTRELLAS */
 .star {
     position: absolute;
     background: white;
@@ -42,7 +38,6 @@ body{
     opacity: 0.3;
     animation: float 12s infinite linear;
     z-index: 0;
-    pointer-events: none;
 }
 
 @keyframes float {
@@ -67,7 +62,7 @@ body{
     min-height:420px;
     border-radius:30px;
     padding:25px;
-    /* Desenfoque (Glassmorphism) */
+    /* Glassmorphism: Difuminado pero traslúcido */
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     background: var(--glass);
@@ -79,14 +74,11 @@ body{
     z-index: 50;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 #interactive-box {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
 }
 
@@ -99,18 +91,16 @@ body{
 
 #warning-text {
     color: #fff;
-    font-weight: bold;
     font-size: 0.8rem;
     margin-bottom: 8px;
     min-height: 1.2rem;
-    text-transform: uppercase;
+    font-weight: bold;
 }
 
 h1{
     color:white;
     font-size:1.3rem;
     margin: 0 0 25px 0;
-    letter-spacing: 0.5px;
 }
 
 .btn-container{
@@ -119,7 +109,7 @@ h1{
     align-items: center;
     gap: 15px;
     width: 100%;
-    min-height:150px; /* Espacio para que el botón NO se mueva */
+    min-height:160px;
     position: relative;
 }
 
@@ -129,7 +119,6 @@ button{
     padding:14px 28px;
     font-weight:900;
     cursor:pointer;
-    transition: transform 0.1s;
 }
 
 #btn-si{
@@ -150,7 +139,6 @@ button{
     background: #222; 
     color:white; 
     z-index: 70;
-    position: relative;
 }
 
 #success-content{
@@ -162,25 +150,19 @@ button{
 .motivation{ color:white; font-size:1.1rem; margin-bottom:10px; font-weight:bold; }
 .subtext{ color:rgba(255,255,255,0.8); font-size:0.85rem; margin-bottom:20px; }
 
-/* FIX iOS: Aseguramos que el link sea un bloque clickable con alto z-index */
 .insta-link {
     display: inline-block;
-    text-decoration: none;
     margin-bottom: 25px;
-    transition: transform 0.2s;
     cursor: pointer;
-    position: relative;
     z-index: 99;
 }
-
-.insta-link:active { transform: scale(0.9); }
 
 .tolon-img-small {
     max-width: 110px;
     height: auto;
 }
 
-/* CENTRADO DE LOGOS */
+/* LOGOS CENTRADOS */
 .store-logos{
     display:flex;
     flex-wrap: wrap;
@@ -191,7 +173,6 @@ button{
 
 .store-logos img{
     filter: brightness(0) invert(1);
-    object-fit: contain;
 }
 
 @keyframes fade{
@@ -204,7 +185,6 @@ button{
 <body>
 
 <script>
-    // Generar estrellas de fondo
     for (let i = 0; i < 15; i++) {
         let star = document.createElement('div');
         star.className = 'star';
@@ -221,11 +201,9 @@ button{
 </div>
 
 <div class="main-card" id="mainCard">
-
     <div id="interactive-box">
         <div id="warning-text"></div>
         <h1>¿Quieres recibir noticias exclusivas?</h1>
-
         <div class="btn-container" id="container-botones">
             <button id="btn-si" onclick="celebrate()">SÍ</button>
             <button id="btn-no" onmouseover="reject()" onclick="reject()">NO</button>
@@ -236,21 +214,18 @@ button{
         <div class="motivation">✨ Lo exclusivo no es para todos…</div>
         <div class="subtext">Toca el logo para seguirnos</div>
 
-        <a href="https://www.instagram.com/tolon_fm/" 
-   onclick="openInstagram(event)"
-   class="insta-link">
-    <img src="tolon b.PNG" class="tolon-img-small" alt="Ir a Instagram">
+        <a href="#" onclick="openInstagram(event)" class="insta-link">
+            <img src="tolon b.PNG" class="tolon-img-small" alt="Instagram">
         </a>
 
         <div class="store-logos">
-            <img src="LOGO MIMI JOYERIA.png" style="height: 40px; width: auto;">
-            <img src="cocotahi.png" style="height: 50px; width: auto;">
-            <img src="Balu moda.png" style="height: 55px; width: auto;">
-            <img src="pdpaola.png" style="height: 75px; width: auto;">
-            <img src="pandora.png" style="height: 75px; width: auto;">
+            <img src="LOGO MIMI JOYERIA.png" style="height: 40px;">
+            <img src="cocotahi.png" style="height: 50px;">
+            <img src="Balu moda.png" style="height: 55px;">
+            <img src="pdpaola.png" style="height: 75px;">
+            <img src="pandora.png" style="height: 75px;">
         </div>
     </div>
-
 </div>
 
 <script>
@@ -273,30 +248,16 @@ function reject(){
         warning.innerText = messages[(attempts-1) % messages.length];
         btnSi.innerText = siTexts[attempts % siTexts.length];
 
-        if(attempts === 1) { 
-            btnNo.style.position = "absolute"; 
-        }
+        if(attempts === 1) btnNo.style.position = "absolute";
 
-        // LÓGICA DE HITBOX (Evitar colisión)
         let overlap = true;
         let newLeft, newTop;
 
         while(overlap) {
             newLeft = Math.floor(Math.random() * 70) + 5;
             newTop = Math.floor(Math.random() * 70) + 5;
-
-            // Simulamos dónde quedaría el botón NO para chequear colisión con el SÍ
-            // Consideramos un margen de seguridad (hitbox)
-            const siRect = btnSi.getBoundingClientRect();
-            const containerRect = document.getElementById("container-botones").getBoundingClientRect();
-            
-            // Calculamos posición futura del botón NO relativa al contenedor
-            const futureNoLeft = (newLeft / 100) * containerRect.width;
-            const futureNoTop = (newTop / 100) * containerRect.height;
-
-            // Si la distancia al centro del botón SÍ es suficiente, rompemos el bucle
-            // El botón SÍ suele estar en el centro: left 50%, top 50% aprox.
-            if (Math.abs(newLeft - 50) > 25 || Math.abs(newTop - 50) > 25) {
+            // Evitamos que el botón NO caiga en el centro (donde está el SÍ)
+            if (Math.abs(newLeft - 50) > 28 || Math.abs(newTop - 50) > 28) {
                 overlap = false;
             }
         }
@@ -309,48 +270,40 @@ function reject(){
     if(attempts >= 6) {
         btnNo.style.display = "none";
         warning.innerText = "¡YA NO TIENES OPCIÓN!";
-        btnSi.style.transform = `scale(2)`;
     }
 }
 
 function celebrate(){
-    confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#ffffff', '#cccccc', '#000000']
-    });
+    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffffff', '#cccccc', '#000000'] });
     document.getElementById("interactive-box").style.display = "none";
     document.getElementById("success-content").style.display = "block";
 }
 
+// SOLO CAMBIÉ ESTA FUNCIÓN PARA QUE ABRA DIRECTAMENTE EN LA APP DE ANDROID
 function openInstagram(e){
     e.preventDefault();
-
     const username = "tolon_fm";
-
+    const webUrl = "https://www.instagram.com/" + username + "/";
     const isAndroid = /Android/i.test(navigator.userAgent);
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     if(isAndroid){
-        // Intent para Android
-        window.location.href = 
-        "intent://instagram.com/_u/" + username + 
-        "#Intent;package=com.instagram.android;scheme=https;end";
-    }
-    else if(isIOS){
-        // Deep link para iOS
+        // Intento directo para abrir la app de Instagram en Android
+        window.location.href = "intent://instagram.com/_u/" + username + "/#Intent;package=com.instagram.android;scheme=https;end;";
+        
+        // Fallback por si no tiene la app instalada
+        setTimeout(function() {
+            window.location.href = webUrl;
+        }, 800);
+    } else {
+        // Para iOS
         window.location.href = "instagram://user?username=" + username;
+        
+        setTimeout(function() {
+            window.location.href = webUrl;
+        }, 1200);
     }
-
-    // Fallback web si no tiene la app
-    setTimeout(function(){
-        window.location.href = "https://www.instagram.com/" + username + "/";
-    }, 800);
 }
 </script>
 
 </body>
 </html>
-
-
