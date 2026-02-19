@@ -12,7 +12,8 @@
     --negro:#000;
     --gris-oscuro:#1a1a1a;
     --blanco:#fff;
-    --glass:rgba(255,255,255,0.05);
+    /* Glassmorphism: Fondo muy transparente para que se vea el desenfoque */
+    --glass: rgba(255, 255, 255, 0.08); 
 }
 
 *{
@@ -23,25 +24,25 @@
 body{
     margin:0;
     height:100vh;
-    /* FONDO LIGERO: Degradado simple en escala de grises */
-    background: linear-gradient(135deg, #000000 0%, #333333 50%, #000000 100%);
+    /* FONDO: Radial gradient para centro claro y esquinas oscuras */
+    background: radial-gradient(circle, #333333 0%, #000000 100%);
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    font-family:'Helvetica Neue',Arial, sans-serif;
+    font-family:'Helvetica Neue', Arial, sans-serif;
     overflow:hidden;
 }
 
-/* ESTRELLAS (Ligeras) */
+/* ESTRELLAS */
 .star {
     position: absolute;
     background: white;
     border-radius: 50%;
-    opacity: 0.4;
-    animation: float 10s infinite linear;
+    opacity: 0.3;
+    animation: float 12s infinite linear;
     z-index: 0;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 @keyframes float {
@@ -51,36 +52,36 @@ body{
 
 .header-logo-outside{
     text-align:center;
-    margin-bottom:10px;
+    margin-bottom:15px;
     z-index: 100;
 }
 
 .header-logo-outside img {
-    max-width: 140px;
+    max-width: 130px;
     height: auto;
 }
 
 .main-card{
-    width:90%;
+    width:92%;
     max-width:360px;
-    min-height:400px; 
-    border-radius:25px;
-    padding:20px;
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
+    min-height:420px;
+    border-radius:30px;
+    padding:25px;
+    /* Desenfoque (Glassmorphism) */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     background: var(--glass);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
     display:flex;
     flex-direction:column;
     text-align:center;
-    position: relative; 
+    position: relative;
     z-index: 50;
-    /* CENTRADO TOTAL DEL CONTENIDO */
     justify-content: center;
     align-items: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* CONTENEDOR SI/NO CENTRADO */
 #interactive-box {
     display: flex;
     flex-direction: column;
@@ -100,14 +101,16 @@ body{
     color: #fff;
     font-weight: bold;
     font-size: 0.8rem;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     min-height: 1.2rem;
+    text-transform: uppercase;
 }
 
 h1{
     color:white;
-    font-size:1.2rem;
-    margin: 0 0 20px 0;
+    font-size:1.3rem;
+    margin: 0 0 25px 0;
+    letter-spacing: 0.5px;
 }
 
 .btn-container{
@@ -116,73 +119,83 @@ h1{
     align-items: center;
     gap: 15px;
     width: 100%;
-    min-height:100px;
+    min-height:150px; /* Espacio para que el botón NO se mueva */
     position: relative;
 }
 
 button{
     border:none;
-    border-radius:10px;
-    padding:12px 25px;
+    border-radius:12px;
+    padding:14px 28px;
     font-weight:900;
     cursor:pointer;
+    transition: transform 0.1s;
 }
 
 #btn-si{
     background:white;
     color:black;
     z-index: 60;
+    position: relative;
     animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
     100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
-#btn-no{ background: #333; color:white; z-index: 70; }
+#btn-no{ 
+    background: #222; 
+    color:white; 
+    z-index: 70;
+    position: relative;
+}
 
 #success-content{
     display:none;
-    animation:fade .5s ease-in forwards;
+    animation:fade .6s ease-out forwards;
     width: 100%;
 }
 
-.motivation{ color:white; font-size:1rem; margin-bottom:10px; font-weight:bold; }
-.subtext{ color:white; font-size:0.85rem; margin-bottom:15px; }
+.motivation{ color:white; font-size:1.1rem; margin-bottom:10px; font-weight:bold; }
+.subtext{ color:rgba(255,255,255,0.8); font-size:0.85rem; margin-bottom:20px; }
 
-/* INSTAGRAM: SOLO IMAGEN */
+/* FIX iOS: Aseguramos que el link sea un bloque clickable con alto z-index */
 .insta-link {
-    display: inline-block; /* Cambiado a inline-block para una sola imagen */
+    display: inline-block;
     text-decoration: none;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     transition: transform 0.2s;
     cursor: pointer;
+    position: relative;
+    z-index: 99;
 }
 
-.insta-link:active { transform: scale(0.95); }
+.insta-link:active { transform: scale(0.9); }
 
 .tolon-img-small {
-    max-width: 120px; /* Un poco más grande ahora que está sola */
+    max-width: 110px;
     height: auto;
 }
 
+/* CENTRADO DE LOGOS */
 .store-logos{
     display:flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 12px;
-    align-items: center; 
+    gap: 15px;
+    align-items: center;
 }
 
 .store-logos img{
-    height: 45px; 
     filter: brightness(0) invert(1);
+    object-fit: contain;
 }
 
 @keyframes fade{
-    from{opacity:0; transform:translateY(10px);}
+    from{opacity:0; transform:translateY(15px);}
     to{opacity:1; transform:translateY(0);}
 }
 </style>
@@ -191,7 +204,8 @@ button{
 <body>
 
 <script>
-    for (let i = 0; i < 12; i++) {
+    // Generar estrellas de fondo
+    for (let i = 0; i < 15; i++) {
         let star = document.createElement('div');
         star.className = 'star';
         star.style.width = Math.random() * 2 + 'px';
@@ -203,7 +217,7 @@ button{
 </script>
 
 <div class="header-logo-outside">
-    <img src="tolon b.PNG" alt="Logo">
+    <img src="tolon b.PNG" alt="Logo Tolón">
 </div>
 
 <div class="main-card" id="mainCard">
@@ -212,25 +226,26 @@ button{
         <div id="warning-text"></div>
         <h1>¿Quieres recibir noticias exclusivas?</h1>
 
-        <div class="btn-container">
+        <div class="btn-container" id="container-botones">
             <button id="btn-si" onclick="celebrate()">SÍ</button>
-            <button id="btn-no" onclick="reject()">NO</button>
+            <button id="btn-no" onmouseover="reject()" onclick="reject()">NO</button>
         </div>
     </div>
 
     <div id="success-content">
         <div class="motivation">✨ Lo exclusivo no es para todos…</div>
-        <div class="subtext">Toca para enterarte de más</div>
+        <div class="subtext">Toca el logo para seguirnos</div>
 
         <a href="https://www.instagram.com/tolon_fm/" target="_blank" rel="noopener noreferrer" class="insta-link">
-            <img src="tolon b.PNG" class="tolon-img-small" alt="Ir a Instagram">
+            <img src="tolon b.PNG" class="tolon-img-small" alt="Instagram Tolon">
         </a>
 
         <div class="store-logos">
-            <img src="LOGO MIMI JOYERIA.png">
-            <img src="cocotahi.png">
-            <img src="Balu moda.png">
-            <img src="pdpaola.png" style="height:60px;">
+            <img src="LOGO MIMI JOYERIA.png" style="height: 40px; width: auto;">
+            <img src="cocotahi.png" style="height: 50px; width: auto;">
+            <img src="Balu moda.png" style="height: 55px; width: auto;">
+            <img src="pdpaola.png" style="height: 75px; width: auto;">
+            <img src="pandora.png" style="height: 75px; width: auto;">
         </div>
     </div>
 
@@ -238,8 +253,8 @@ button{
 
 <script>
 let attempts = 0;
-const messages = ["¡Ey!", "¡Por ahí no!", "¡Error!", "¡Cuidado!", "¡Basta!"];
-const siTexts = ["SÍ", "¿SEGURO?", "¡DALE YA!", "OBVIO", "SÍ O SÍ"];
+const messages = ["¡Ey!", "¿En serio?", "¡Intenta otra vez!", "¡Casi!", "¡Imposible!"];
+const siTexts = ["SÍ", "¿SEGURO?", "¡DALE YA!", "POR SUPUESTO", "SÍ O SÍ"];
 
 function reject(){
     attempts++;
@@ -250,37 +265,68 @@ function reject(){
 
     if(attempts <= 5) {
         card.classList.remove("shake");
-        void card.offsetWidth; 
+        void card.offsetWidth;
         card.classList.add("shake");
-        warning.innerText = messages[attempts-1];
+        
+        warning.innerText = messages[(attempts-1) % messages.length];
         btnSi.innerText = siTexts[attempts % siTexts.length];
 
-        if(attempts === 1) { btnNo.style.position = "absolute"; }
+        if(attempts === 1) { 
+            btnNo.style.position = "absolute"; 
+        }
 
-        let randomLeft = Math.floor(Math.random() * 60) + 20;
-        let randomTop = Math.floor(Math.random() * 50) + 20;
+        // LÓGICA DE HITBOX (Evitar colisión)
+        let overlap = true;
+        let newLeft, newTop;
 
-        btnNo.style.left = randomLeft + "%";
-        btnNo.style.top = randomTop + "%";
-        btnSi.style.transform = `scale(${1 + attempts * 0.25})`;
+        while(overlap) {
+            newLeft = Math.floor(Math.random() * 70) + 5;
+            newTop = Math.floor(Math.random() * 70) + 5;
+
+            // Simulamos dónde quedaría el botón NO para chequear colisión con el SÍ
+            // Consideramos un margen de seguridad (hitbox)
+            const siRect = btnSi.getBoundingClientRect();
+            const containerRect = document.getElementById("container-botones").getBoundingClientRect();
+            
+            // Calculamos posición futura del botón NO relativa al contenedor
+            const futureNoLeft = (newLeft / 100) * containerRect.width;
+            const futureNoTop = (newTop / 100) * containerRect.height;
+
+            // Si la distancia al centro del botón SÍ es suficiente, rompemos el bucle
+            // El botón SÍ suele estar en el centro: left 50%, top 50% aprox.
+            if (Math.abs(newLeft - 50) > 25 || Math.abs(newTop - 50) > 25) {
+                overlap = false;
+            }
+        }
+
+        btnNo.style.left = newLeft + "%";
+        btnNo.style.top = newTop + "%";
+        btnSi.style.transform = `scale(${1 + attempts * 0.20})`;
     }
 
-    if(attempts >= 5) {
+    if(attempts >= 6) {
         btnNo.style.display = "none";
         warning.innerText = "¡YA NO TIENES OPCIÓN!";
+        btnSi.style.transform = `scale(2)`;
     }
 }
 
 function celebrate(){
     confetti({
-        particleCount: 100,
-        spread: 60,
+        particleCount: 150,
+        spread: 70,
         origin: { y: 0.6 },
-        colors: ['#ffffff', '#888888', '#000000']
+        colors: ['#ffffff', '#cccccc', '#000000']
     });
     document.getElementById("interactive-box").style.display = "none";
     document.getElementById("success-content").style.display = "block";
 }
+
+// Fix adicional para iOS: Asegurar que el click en el enlace funcione
+document.querySelector('.insta-link').addEventListener('click', function(e) {
+    // Si por alguna razón el href falla en iOS, forzamos la apertura
+    window.open("https://www.instagram.com/tolon_fm/", "_blank");
+});
 </script>
 
 </body>
