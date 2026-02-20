@@ -22,7 +22,6 @@
 body {
     margin: 0;
     height: 100vh;
-    /* Deep charcoal to pitch-black radial gradient */
     background: radial-gradient(circle at center, #1a1a1a 0%, var(--pitch-black) 100%);
     display: flex;
     flex-direction: column;
@@ -33,7 +32,6 @@ body {
     position: relative;
 }
 
-/* Sutil brillo central cinematográfico */
 body::before {
     content: '';
     position: absolute;
@@ -43,7 +41,6 @@ body::before {
     pointer-events: none;
 }
 
-/* Micro-partículas y Estrellas con profundidad 3D */
 .particle {
     position: absolute;
     background: white;
@@ -78,7 +75,6 @@ body::before {
     min-height: 440px;
     border-radius: 40px;
     padding: 30px;
-    /* Glassmorphism de lujo */
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     background: var(--glass);
@@ -204,26 +200,20 @@ button {
 <body>
 
 <script>
-    // Generador de partículas cósmicas (Estrellas, Micro-polvo y Bokeh)
+    // Generador de partículas cósmicas
     const particleCount = 80;
     for (let i = 0; i < particleCount; i++) {
         let p = document.createElement('div');
         p.className = 'particle';
-        
-        // Tamaños variados para efecto 3D
         const size = Math.random() * 3;
         const blur = (Math.random() * 4);
-        
         p.style.width = size + 'px';
         p.style.height = size + 'px';
         p.style.left = Math.random() * 100 + 'vw';
         p.style.top = Math.random() * 100 + 'vh';
         p.style.filter = `blur(${blur}px)`;
-        
-        // Animaciones aleatorias
         p.style.animationDuration = (Math.random() * 10 + 5) + 's';
         p.style.animationDelay = (Math.random() * 5) + 's';
-        
         document.body.appendChild(p);
     }
 </script>
@@ -244,7 +234,7 @@ button {
 
     <div id="success-content">
         <div class="motivation">✨ Lo exclusivo no es para todos…</div>
-        <div class="subtext">Toca TOLÓN para seguirnos</div>
+        <div class="subtext">Toca el logo para seguirnos</div>
 
         <a href="#" onclick="openInstagram(event)" class="insta-link">
             <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -270,8 +260,8 @@ button {
             <img src="LOGO MIMI JOYERIA.png" style="height: 35px;">
             <img src="cocotahi.png" style="height: 40px;">
             <img src="Balu moda.png" style="height: 45px;">
-            <img src="pdpaola.png" style="height: 80px;">
-            <img src="pandora.png" style="height: 90px;">
+            <img src="pdpaola.png" style="height: 55px;">
+            <img src="pandora.png" style="height: 55px;">
         </div>
     </div>
 </div>
@@ -309,7 +299,6 @@ function reject(){
 }
 
 function celebrate(){
-    // Confetti con colores de lujo (Blanco, plata, oro)
     confetti({ 
         particleCount: 150, 
         spread: 70, 
@@ -320,17 +309,59 @@ function celebrate(){
     document.getElementById("success-content").style.display = "block";
 }
 
-function openInstagram(e){
+// Función mejorada para abrir Instagram en Android
+function openInstagram(e) {
     e.preventDefault();
     const username = "tolon_fm";
     const webUrl = "https://www.instagram.com/" + username + "/";
     const isAndroid = /Android/i.test(navigator.userAgent);
-    if(isAndroid){
-        window.location.href = "intent://instagram.com/_u/" + username + "/#Intent;package=com.instagram.android;scheme=https;end;";
-        setTimeout(function() { window.location.href = webUrl; }, 800);
+
+    // Intentos de apertura
+    if (isAndroid) {
+        // 1. Intentar con intent URI (más confiable en algunos navegadores)
+        const intentURI = "intent://instagram.com/_u/" + username + "#Intent;package=com.instagram.android;scheme=https;end;";
+        
+        // 2. Esquema directo (instagram://) como respaldo
+        const instagramScheme = "instagram://user?username=" + username;
+
+        // Variable para controlar si ya se redirigió
+        let redirected = false;
+
+        // Función para redirigir a la web si falla
+        const fallback = function() {
+            if (!redirected) {
+                redirected = true;
+                window.location.href = webUrl;
+            }
+        };
+
+        // Detectar si la app se abre (la ventana pierde foco)
+        const blurHandler = function() {
+            // La app probablemente se abrió, cancelamos el timeout
+            clearTimeout(timeoutId);
+            window.removeEventListener('blur', blurHandler);
+        };
+        window.addEventListener('blur', blurHandler);
+
+        // Timeout para redirigir a la web si no se abre la app
+        const timeoutId = setTimeout(fallback, 800);
+
+        // Intentar abrir con intent URI
+        window.location.href = intentURI;
+
+        // También intentar con el esquema instagram:// después de un breve instante (por si el intent falla)
+        // Pero solo si no se ha redirigido ya
+        setTimeout(function() {
+            if (!redirected) {
+                window.location.href = instagramScheme;
+            }
+        }, 200);
     } else {
+        // En iOS usar el esquema directo y fallback web
         window.location.href = "instagram://user?username=" + username;
-        setTimeout(function() { window.location.href = webUrl; }, 1200);
+        setTimeout(function() {
+            window.location.href = webUrl;
+        }, 1200);
     }
 }
 </script>
