@@ -8,176 +8,195 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-:root{
-    --negro:#000;
-    --glass: rgba(255, 255, 255, 0.08); 
+:root {
+    --charcoal: #0a0a0a;
+    --pitch-black: #000000;
+    --glass: rgba(255, 255, 255, 0.05);
 }
 
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-body{
-    margin:0;
-    height:100vh;
-    /* FONDO: Centro claro (#444), esquinas negras (#000) */
-    background: radial-gradient(circle, #444444 0%, #000000 100%);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    font-family:'Helvetica Neue', Arial, sans-serif;
-    overflow:hidden;
+body {
+    margin: 0;
+    height: 100vh;
+    /* Deep charcoal to pitch-black radial gradient */
+    background: radial-gradient(circle at center, #1a1a1a 0%, var(--pitch-black) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
 }
 
-.star {
+/* Sutil brillo central cinematográfico */
+body::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Micro-partículas y Estrellas con profundidad 3D */
+.particle {
     position: absolute;
     background: white;
     border-radius: 50%;
-    opacity: 0.3;
-    animation: float 12s infinite linear;
-    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeInOut linear infinite;
 }
 
-@keyframes float {
-    0% { transform: translateY(100vh) scale(0); }
-    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(0); }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateY(-100px); }
 }
 
-.header-logo-outside{
-    text-align:center;
-    margin-bottom:15px;
+.header-logo-outside {
+    text-align: center;
+    margin-bottom: 20px;
     z-index: 100;
 }
 
 .header-logo-outside img {
-    max-width: 130px;
+    max-width: 140px;
     height: auto;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
 }
 
-.main-card{
-    width:92%;
-    max-width:360px;
-    min-height:420px;
-    border-radius:30px;
-    padding:25px;
-    /* Glassmorphism: Difuminado pero traslúcido */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+.main-card {
+    width: 92%;
+    max-width: 380px;
+    min-height: 440px;
+    border-radius: 40px;
+    padding: 30px;
+    /* Glassmorphism de lujo */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     background: var(--glass);
-    border: 1px solid rgba(255,255,255,0.15);
-    display:flex;
-    flex-direction:column;
-    text-align:center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
     position: relative;
     z-index: 50;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
 }
 
-#interactive-box {
+h1 {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin: 0 0 30px 0;
+}
+
+.btn-container {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.shake { animation: shakeAnim 0.3s linear; }
-@keyframes shakeAnim {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
-}
-
-#warning-text {
-    color: #fff;
-    font-size: 0.8rem;
-    margin-bottom: 8px;
-    min-height: 1.2rem;
-    font-weight: bold;
-}
-
-h1{
-    color:white;
-    font-size:1.3rem;
-    margin: 0 0 25px 0;
-}
-
-.btn-container{
-    display:flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
     width: 100%;
-    min-height:160px;
+    min-height: 180px;
     position: relative;
 }
 
-button{
-    border:none;
-    border-radius:12px;
-    padding:14px 28px;
-    font-weight:900;
-    cursor:pointer;
+button {
+    border: none;
+    border-radius: 14px;
+    padding: 16px 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-#btn-si{
-    background:white;
-    color:black;
+#btn-si {
+    background: white;
+    color: black;
     z-index: 60;
     position: relative;
-    animation: pulse 1.5s infinite;
+    animation: pulseGlow 2s infinite;
 }
 
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5); }
-    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
     100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
-#btn-no{ 
-    background: #222; 
-    color:white; 
+#btn-no { 
+    background: #111; 
+    color: white; 
+    border: 1px solid rgba(255,255,255,0.1);
     z-index: 70;
 }
 
-#success-content{
-    display:none;
-    animation:fade .6s ease-out forwards;
+#success-content {
+    display: none;
+    animation: fadeInBlur 0.8s ease-out forwards;
     width: 100%;
 }
 
-.motivation{ color:white; font-size:1.1rem; margin-bottom:10px; font-weight:bold; }
-.subtext{ color:rgba(255,255,255,0.8); font-size:0.85rem; margin-bottom:20px; }
+@keyframes fadeInBlur {
+    from { opacity: 0; filter: blur(10px); transform: scale(0.9); }
+    to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+
+.motivation { color: white; font-size: 1.2rem; margin-bottom: 12px; font-weight: 300; }
+.subtext { color: rgba(255, 255, 255, 0.5); font-size: 0.9rem; margin-bottom: 25px; }
 
 .insta-link {
-    display: inline-block;
-    margin-bottom: 25px;
-    cursor: pointer;
-    z-index: 99;
-}
-
-.tolon-img-small {
-    max-width: 110px;
-    height: auto;
-}
-
-/* LOGOS CENTRADOS */
-.store-logos{
-    display:flex;
-    flex-wrap: wrap;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
     gap: 15px;
+    text-decoration: none;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.insta-link span {
+    color: white;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    font-size: 1.6rem;
+}
+
+.store-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
     align-items: center;
+    opacity: 0.7;
 }
 
-.store-logos img{
+.store-logos img {
     filter: brightness(0) invert(1);
+    transition: opacity 0.3s;
 }
 
-@keyframes fade{
-    from{opacity:0; transform:translateY(15px);}
-    to{opacity:1; transform:translateY(0);}
+.store-logos img:hover { opacity: 1; }
+
+#warning-text {
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 </style>
 </head>
@@ -185,52 +204,81 @@ button{
 <body>
 
 <script>
-    for (let i = 0; i < 15; i++) {
-        let star = document.createElement('div');
-        star.className = 'star';
-        star.style.width = Math.random() * 2 + 'px';
-        star.style.height = star.style.width;
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDelay = Math.random() * 5 + 's';
-        document.body.appendChild(star);
+    // Generador de partículas cósmicas (Estrellas, Micro-polvo y Bokeh)
+    const particleCount = 80;
+    for (let i = 0; i < particleCount; i++) {
+        let p = document.createElement('div');
+        p.className = 'particle';
+        
+        // Tamaños variados para efecto 3D
+        const size = Math.random() * 3;
+        const blur = (Math.random() * 4);
+        
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.top = Math.random() * 100 + 'vh';
+        p.style.filter = `blur(${blur}px)`;
+        
+        // Animaciones aleatorias
+        p.style.animationDuration = (Math.random() * 10 + 5) + 's';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        
+        document.body.appendChild(p);
     }
 </script>
 
 <div class="header-logo-outside">
-    <img src="tolon b.PNG" alt="Logo Tolón">
+    <img src="tolon b.PNG" alt="TOLÓN Fashion Mall">
 </div>
 
 <div class="main-card" id="mainCard">
     <div id="interactive-box">
         <div id="warning-text"></div>
         <h1>¿Quieres recibir noticias exclusivas?</h1>
-        <div class="btn-container" id="container-botones">
+        <div class="btn-container">
             <button id="btn-si" onclick="celebrate()">SÍ</button>
-            <button id="btn-no" onmouseover="reject()" onclick="reject()">NO</button>
+            <button id="btn-no" onclick="reject()">NO</button>
         </div>
     </div>
 
     <div id="success-content">
         <div class="motivation">✨ Lo exclusivo no es para todos…</div>
-        <div class="subtext">Toca el logo para seguirnos</div>
+        <div class="subtext">Toca TOLÓN para seguirnos</div>
 
         <a href="#" onclick="openInstagram(event)" class="insta-link">
-            <img src="tolon b.PNG" class="tolon-img-small" alt="Instagram">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="instaGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#f9ed32"/> 
+                        <stop offset="20%" style="stop-color:#f69522"/>
+                        <stop offset="40%" style="stop-color:#ee2a7b"/>
+                        <stop offset="60%" style="stop-color:#d22a8a"/>
+                        <stop offset="80%" style="stop-color:#8b2ab2"/>
+                        <stop offset="100%" style="stop-color:#002aff"/>
+                    </linearGradient>
+                </defs>
+                <rect width="24" height="24" rx="5.5" fill="url(#instaGrad)"/>
+                <path d="M12 7.5C9.51472 7.5 7.5 9.51472 7.5 12C7.5 14.4853 9.51472 16.5 12 16.5C14.4853 16.5 16.5 14.4853 16.5 12C16.5 9.51472 14.4853 7.5 12 7.5ZM12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12C15 13.6569 13.6569 15 12 15Z" fill="white"/>
+                <path d="M16.5 4.5H7.5C5.84315 4.5 4.5 5.84315 4.5 7.5V16.5C4.5 18.1569 5.84315 19.5 7.5 19.5H16.5C18.1569 19.5 19.5 18.1569 19.5 16.5V7.5C19.5 5.84315 18.1569 4.5 16.5 4.5ZM18 16.5C18 17.3284 17.3284 18 16.5 18H7.5C6.67157 18 6 17.3284 6 16.5V7.5C6 6.67157 6.67157 6 7.5 6H16.5C17.3284 6 18 6.67157 18 7.5V16.5Z" fill="white"/>
+                <circle cx="16.5" cy="7.5" r="1.1" fill="white"/>
+            </svg>
+            <span>TOLÓN</span>
         </a>
 
         <div class="store-logos">
-            <img src="LOGO MIMI JOYERIA.png" style="height: 40px;">
-            <img src="cocotahi.png" style="height: 50px;">
-            <img src="Balu moda.png" style="height: 55px;">
-            <img src="pdpaola.png" style="height: 75px;">
-            <img src="pandora.png" style="height: 75px;">
+            <img src="LOGO MIMI JOYERIA.png" style="height: 35px;">
+            <img src="cocotahi.png" style="height: 40px;">
+            <img src="Balu moda.png" style="height: 45px;">
+            <img src="pdpaola.png" style="height: 80px;">
+            <img src="pandora.png" style="height: 90px;">
         </div>
     </div>
 </div>
 
 <script>
 let attempts = 0;
-const messages = ["¡Ey!", "¿En serio?", "¡Intenta otra vez!", "¡Casi!", "¡Imposible!"];
+const messages = ["¡Hey!", "¿En serio?", "¡Intenta otra vez!", "¡Casi!", "¡Imposible!"];
 const siTexts = ["SÍ", "¿SEGURO?", "¡DALE YA!", "POR SUPUESTO", "SÍ O SÍ"];
 
 function reject(){
@@ -241,30 +289,17 @@ function reject(){
     const card = document.getElementById("mainCard");
 
     if(attempts <= 5) {
-        card.classList.remove("shake");
-        void card.offsetWidth;
-        card.classList.add("shake");
-        
         warning.innerText = messages[(attempts-1) % messages.length];
         btnSi.innerText = siTexts[attempts % siTexts.length];
-
+        
         if(attempts === 1) btnNo.style.position = "absolute";
 
-        let overlap = true;
-        let newLeft, newTop;
-
-        while(overlap) {
-            newLeft = Math.floor(Math.random() * 70) + 5;
-            newTop = Math.floor(Math.random() * 70) + 5;
-            // Evitamos que el botón NO caiga en el centro (donde está el SÍ)
-            if (Math.abs(newLeft - 50) > 28 || Math.abs(newTop - 50) > 28) {
-                overlap = false;
-            }
-        }
-
+        let newLeft = Math.floor(Math.random() * 70) + 5;
+        let newTop = Math.floor(Math.random() * 70) + 5;
+        
         btnNo.style.left = newLeft + "%";
         btnNo.style.top = newTop + "%";
-        btnSi.style.transform = `scale(${1 + attempts * 0.20})`;
+        btnSi.style.transform = `scale(${1 + attempts * 0.15})`;
     }
 
     if(attempts >= 6) {
@@ -274,33 +309,28 @@ function reject(){
 }
 
 function celebrate(){
-    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffffff', '#cccccc', '#000000'] });
+    // Confetti con colores de lujo (Blanco, plata, oro)
+    confetti({ 
+        particleCount: 150, 
+        spread: 70, 
+        origin: { y: 0.6 }, 
+        colors: ['#ffffff', '#d4af37', '#e5e4e2'] 
+    });
     document.getElementById("interactive-box").style.display = "none";
     document.getElementById("success-content").style.display = "block";
 }
 
-// SOLO CAMBIÉ ESTA FUNCIÓN PARA QUE ABRA DIRECTAMENTE EN LA APP DE ANDROID
 function openInstagram(e){
     e.preventDefault();
     const username = "tolon_fm";
     const webUrl = "https://www.instagram.com/" + username + "/";
     const isAndroid = /Android/i.test(navigator.userAgent);
-
     if(isAndroid){
-        // Intento directo para abrir la app de Instagram en Android
         window.location.href = "intent://instagram.com/_u/" + username + "/#Intent;package=com.instagram.android;scheme=https;end;";
-        
-        // Fallback por si no tiene la app instalada
-        setTimeout(function() {
-            window.location.href = webUrl;
-        }, 800);
+        setTimeout(function() { window.location.href = webUrl; }, 800);
     } else {
-        // Para iOS
         window.location.href = "instagram://user?username=" + username;
-        
-        setTimeout(function() {
-            window.location.href = webUrl;
-        }, 1200);
+        setTimeout(function() { window.location.href = webUrl; }, 1200);
     }
 }
 </script>
