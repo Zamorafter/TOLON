@@ -12,6 +12,7 @@
     --charcoal: #0a0a0a;
     --pitch-black: #000000;
     --glass: rgba(255, 255, 255, 0.05);
+    --modal-overlay: rgba(0, 0, 0, 0.8);
 }
 
 * {
@@ -59,12 +60,12 @@ body::before {
 
 .header-logo-outside {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     z-index: 100;
 }
 
 .header-logo-outside img {
-    max-width: 140px;
+    max-width: 250px;
     height: auto;
     filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
 }
@@ -194,6 +195,70 @@ button {
     font-weight: bold;
     letter-spacing: 1px;
 }
+
+/* Modal de confirmación */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-overlay);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    padding: 30px;
+    max-width: 320px;
+    width: 80%;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.modal-card p {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s;
+}
+
+.modal-btn:hover {
+    transform: scale(1.05);
+}
+
+#modal-si {
+    background: white;
+    color: black;
+}
+
+#modal-no {
+    background: #222;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.1);
+}
 </style>
 </head>
 
@@ -218,8 +283,19 @@ button {
     }
 </script>
 
+<!-- Modal de confirmación -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-card">
+        <p>¿Estás seguro?</p>
+        <div class="modal-buttons">
+            <button class="modal-btn" id="modal-si">Sí</button>
+            <button class="modal-btn" id="modal-no">No</button>
+        </div>
+    </div>
+</div>
+
 <div class="header-logo-outside">
-    <img src="tolon b.PNG" alt="TOLÓN Fashion Mall">
+    <img src="la cuadra food hall blanco.png" alt="TOLÓN Fashion Mall">
 </div>
 
 <div class="main-card" id="mainCard">
@@ -227,14 +303,15 @@ button {
         <div id="warning-text"></div>
         <h1>¿Quieres saber que paso con la antigua feria?</h1>
         <div class="btn-container">
-            <button id="btn-si" onclick="celebrate()">SÍ</button>
+            <!-- El botón SÍ ahora llama a showConfirmModal() -->
+            <button id="btn-si" onclick="showConfirmModal()">SÍ</button>
             <button id="btn-no" onclick="reject()">NO</button>
         </div>
     </div>
 
     <div id="success-content">
-        <div class="motivation">✨ Lo exclusivo no es para todos…</div>
-        <div class="subtext">Toca TOLÓN para seguirnos</div>
+        <div class="motivation">✨Se convirtio en La Cuadra Food Hall, el nuevo destino gastronomico de Las Mercedes</div>
+        <div class="subtext">Toca La Cuadra para seguirnos</div>
 
         <a href="#" onclick="openInstagram(event)" class="insta-link">
             <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -253,7 +330,7 @@ button {
                 <path d="M16.5 4.5H7.5C5.84315 4.5 4.5 5.84315 4.5 7.5V16.5C4.5 18.1569 5.84315 19.5 7.5 19.5H16.5C18.1569 19.5 19.5 18.1569 19.5 16.5V7.5C19.5 5.84315 18.1569 4.5 16.5 4.5ZM18 16.5C18 17.3284 17.3284 18 16.5 18H7.5C6.67157 18 6 17.3284 6 16.5V7.5C6 6.67157 6.67157 6 7.5 6H16.5C17.3284 6 18 6.67157 18 7.5V16.5Z" fill="white"/>
                 <circle cx="16.5" cy="7.5" r="1.1" fill="white"/>
             </svg>
-            <span>TOLÓN</span>
+            <span>LA CUADRA FOOD HALL</span>
         </a>
 
         <div class="store-logos">
@@ -270,6 +347,16 @@ button {
 let attempts = 0;
 const messages = ["¡Hey!", "¿En serio?", "¡Intenta otra vez!", "¡Casi!", "¡Imposible!"];
 const siTexts = ["SÍ", "¿SEGURO?", "¡DALE YA!", "POR SUPUESTO", "SÍ O SÍ"];
+
+// Función para mostrar el modal de confirmación
+function showConfirmModal() {
+    document.getElementById('confirmModal').style.display = 'flex';
+}
+
+// Función para cerrar el modal
+function closeModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+}
 
 function reject(){
     attempts++;
@@ -307,7 +394,24 @@ function celebrate(){
     });
     document.getElementById("interactive-box").style.display = "none";
     document.getElementById("success-content").style.display = "block";
+    closeModal(); // Asegurarse de cerrar el modal si estaba abierto
 }
+
+// Asignar eventos a los botones del modal después de que el DOM cargue
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('modal-si').addEventListener('click', function() {
+        celebrate();
+    });
+    document.getElementById('modal-no').addEventListener('click', function() {
+        closeModal();
+    });
+    // Cerrar modal si se hace clic fuera de la tarjeta (opcional)
+    document.getElementById('confirmModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+});
 
 // Función mejorada para abrir Instagram en Android
 function openInstagram(e) {
@@ -316,18 +420,11 @@ function openInstagram(e) {
     const webUrl = "https://www.instagram.com/" + username + "/";
     const isAndroid = /Android/i.test(navigator.userAgent);
 
-    // Intentos de apertura
     if (isAndroid) {
-        // 1. Intentar con intent URI (más confiable en algunos navegadores)
         const intentURI = "intent://instagram.com/_u/" + username + "#Intent;package=com.instagram.android;scheme=https;end;";
-        
-        // 2. Esquema directo (instagram://) como respaldo
         const instagramScheme = "instagram://user?username=" + username;
-
-        // Variable para controlar si ya se redirigió
         let redirected = false;
 
-        // Función para redirigir a la web si falla
         const fallback = function() {
             if (!redirected) {
                 redirected = true;
@@ -335,29 +432,21 @@ function openInstagram(e) {
             }
         };
 
-        // Detectar si la app se abre (la ventana pierde foco)
         const blurHandler = function() {
-            // La app probablemente se abrió, cancelamos el timeout
             clearTimeout(timeoutId);
             window.removeEventListener('blur', blurHandler);
         };
         window.addEventListener('blur', blurHandler);
 
-        // Timeout para redirigir a la web si no se abre la app
         const timeoutId = setTimeout(fallback, 800);
-
-        // Intentar abrir con intent URI
         window.location.href = intentURI;
 
-        // También intentar con el esquema instagram:// después de un breve instante (por si el intent falla)
-        // Pero solo si no se ha redirigido ya
         setTimeout(function() {
             if (!redirected) {
                 window.location.href = instagramScheme;
             }
         }, 200);
     } else {
-        // En iOS usar el esquema directo y fallback web
         window.location.href = "instagram://user?username=" + username;
         setTimeout(function() {
             window.location.href = webUrl;
@@ -368,4 +457,3 @@ function openInstagram(e) {
 
 </body>
 </html>
-
