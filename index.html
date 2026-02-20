@@ -309,55 +309,18 @@ function celebrate(){
     document.getElementById("success-content").style.display = "block";
 }
 
-// Función mejorada para abrir Instagram en Android
+// Función modificada: Android → web, iOS → app con fallback web
 function openInstagram(e) {
     e.preventDefault();
     const username = "tolon_fm";
     const webUrl = "https://www.instagram.com/" + username + "/";
     const isAndroid = /Android/i.test(navigator.userAgent);
 
-    // Intentos de apertura
     if (isAndroid) {
-        // 1. Intentar con intent URI (más confiable en algunos navegadores)
-        const intentURI = "intent://instagram.com/_u/" + username + "#Intent;package=com.instagram.android;scheme=https;end;";
-        
-        // 2. Esquema directo (instagram://) como respaldo
-        const instagramScheme = "instagram://user?username=" + username;
-
-        // Variable para controlar si ya se redirigió
-        let redirected = false;
-
-        // Función para redirigir a la web si falla
-        const fallback = function() {
-            if (!redirected) {
-                redirected = true;
-                window.location.href = webUrl;
-            }
-        };
-
-        // Detectar si la app se abre (la ventana pierde foco)
-        const blurHandler = function() {
-            // La app probablemente se abrió, cancelamos el timeout
-            clearTimeout(timeoutId);
-            window.removeEventListener('blur', blurHandler);
-        };
-        window.addEventListener('blur', blurHandler);
-
-        // Timeout para redirigir a la web si no se abre la app
-        const timeoutId = setTimeout(fallback, 800);
-
-        // Intentar abrir con intent URI
-        window.location.href = intentURI;
-
-        // También intentar con el esquema instagram:// después de un breve instante (por si el intent falla)
-        // Pero solo si no se ha redirigido ya
-        setTimeout(function() {
-            if (!redirected) {
-                window.location.href = instagramScheme;
-            }
-        }, 200);
+        // En Android: abrir directamente en el navegador
+        window.location.href = webUrl;
     } else {
-        // En iOS usar el esquema directo y fallback web
+        // En iOS: intentar abrir la app y si no, ir a la web
         window.location.href = "instagram://user?username=" + username;
         setTimeout(function() {
             window.location.href = webUrl;
